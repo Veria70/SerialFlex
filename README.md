@@ -3,7 +3,7 @@
 A modern, header-only C++ serialization library designed for embedded systems and cross-platform communication.
 This library is your new best friend if you're coding with a microcontroller wizard who eats bits for breakfast — slap it in your project and watch your code go from ‘meh’ to ‘heck yeah,’ my dude! 😂😂😂
 
-[![License: MIT](https://!img.shields.io/badge/License-MIT-blue.svg)](https://!opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 ## Overview
 
