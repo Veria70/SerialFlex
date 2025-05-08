@@ -3,7 +3,7 @@
 A modern, header-only C++ serialization library designed for embedded systems and cross-platform communication.
 This library is your new best friend if you're coding with a microcontroller wizard who eats bits for breakfast — slap it in your project and watch your code go from ‘meh’ to ‘heck yeah,’ my dude! 😂😂😂
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://!img.shields.io/badge/License-MIT-blue.svg)](https://!opensource.org/licenses/MIT)
 
 ## Overview
 
@@ -50,15 +50,15 @@ SerialFlex is a header-only library. Simply copy the `serialflex.hpp` file to yo
 #include <vector>
 #include <string>
 
-// Serialize built-in types
+//! Serialize built-in types
 int value = 42;
 std::vector<uint8_t> serialized = serialflex::serialize(value);
 
-// Serialize STL containers
+//! Serialize STL containers
 std::vector<float> values = {1.0f, 2.0f, 3.0f};
 std::vector<uint8_t> serializedVector = serialflex::serialize(values);
 
-// Deserialize
+//! Deserialize
 int deserializedValue = serialflex::deserialize<int>(serialized);
 std::vector<float> deserializedVector = serialflex::deserialize<std::vector<float>>(serializedVector);
 ```
@@ -66,13 +66,13 @@ std::vector<float> deserializedVector = serialflex::deserialize<std::vector<floa
 ### Creating Framed Packets
 
 ```cpp
-// Create a message packet with ID 0x01
+//! Create a message packet with ID 0x01
 std::vector<uint8_t> packet = serialflex::createPacket(0x01, value);
 
-// Parse the packet
+//! Parse the packet
 auto [success, result] = serialflex::parsePacket<int>(packet);
 if (success) {
-    // Use result...
+    //! Use result...
 }
 ```
 
@@ -84,22 +84,22 @@ struct SensorData {
     float humidity;
     std::string sensorId;
     
-    // Custom serialization method
+    //! Custom serialization method
     std::vector<uint8_t> serialize() const {
         std::vector<uint8_t> result;
-        // Serialization logic...
+        //! Serialization logic...
         return result;
     }
     
-    // Static deserialization method
+    //! Static deserialization method
     static SensorData deserialize(serialflex::ByteReader& reader) {
         SensorData data;
-        // Deserialization logic...
+        //! Deserialization logic...
         return data;
     }
 };
 
-// Use like any other type
+//! Use like any other type
 SensorData data = {22.5f, 65.0f, "SENSOR_001"};
 std::vector<uint8_t> serialized = serialflex::serialize(data);
 SensorData deserialized = serialflex::deserialize<SensorData>(serialized);
@@ -108,21 +108,21 @@ SensorData deserialized = serialflex::deserialize<SensorData>(serialized);
 ### Byte-by-Byte Packet Reception
 
 ```cpp
-// Create a receiver
+//! Create a receiver
 serialflex::PacketReceiver receiver;
 serialflex::DeframedPacket packet;
 
-// Process bytes as they arrive (e.g., from UART)
+//! Process bytes as they arrive (e.g., from UART)
 for (uint8_t byte : receivedData) {
     if (receiver.processByte(byte, packet)) {
         if (packet.valid) {
-            // Process the packet based on messageId
+            //! Process the packet based on messageId
             switch (packet.messageId) {
                 case 0x01:
                     auto sensorData = serialflex::deserialize<SensorData>(packet.payload);
-                    // Handle sensor data...
+                    //! Handle sensor data...
                     break;
-                // Other message types...
+                //! Other message types...
             }
         }
     }
@@ -158,10 +158,10 @@ static YourType deserialize(serialflex::ByteReader& reader);
 The packet format used by SerialFlex:
 
 ```
-+------------+----------+---------+----------+--------+----------+
-| START_BYTE | MSG_ID   | LENGTH  | PAYLOAD  | CRC    | END_BYTE |
++------------+----------+---------+----------+--------+------------+
+| START_BYTE | MSG_ID   | LENGTH  | PAYLOAD  | CRC    | END_BYTE  |
 | (1 byte)   | (1 byte) | (2 byte)| (n bytes)| (2 byte)| (1 byte) |
-+------------+----------+---------+----------+--------+----------+
++------------+----------+---------+----------+--------+------------+
 ```
 
 - **START_BYTE**: Fixed marker (0x7E) indicating the start of a packet
@@ -201,55 +201,55 @@ g++ -std=c++17 main.cpp -o serialflex_example
 ### Example 1: Basic Types
 
 ```cpp
-// Serialize an integer
+//! Serialize an integer
 int32_t testInt = 42;
 auto serializedInt = serialflex::serialize(testInt);
 
-// Deserialize back to original type
+//! Deserialize back to original type
 int32_t deserializedInt = serialflex::deserialize<int32_t>(serializedInt);
 ```
 
 ### Example 2: Containers
 
 ```cpp
-// Serialize a string
+//! Serialize a string
 std::string testString = "Hello, SerialFlex!";
 auto serializedString = serialflex::serialize(testString);
 
-// Deserialize back to original type
+//! Deserialize back to original type
 std::string deserializedString = serialflex::deserialize<std::string>(serializedString);
 ```
 
 ### Example 3: Custom Data Structures
 
 ```cpp
-// Create sensor data
+//! Create sensor data
 SensorData sensorData = {
-    22.5f,                         // temperature
-    65.0f,                         // humidity
-    static_cast<uint32_t>(time(nullptr)), // timestamp
-    "SENSOR_001",                  // sensorId
-    {1024, 2048, 4096}             // readings
+    22.5f,                         //! temperature
+    65.0f,                         //! humidity
+    static_cast<uint32_t>(time(nullptr)), //! timestamp
+    "SENSOR_001",                  //! sensorId
+    {1024, 2048, 4096}             //! readings
 };
 
-// Serialize the data
+//! Serialize the data
 auto serialized = serialflex::serialize(sensorData);
 
-// Deserialize back to original type
+//! Deserialize back to original type
 SensorData deserialized = serialflex::deserialize<SensorData>(serialized);
 ```
 
 ### Example 4: Packet Framing
 
 ```cpp
-// Create a packet with message ID 0x01
+//! Create a packet with message ID 0x01
 auto packet = serialflex::createPacket(0x01, sensorData);
 
-// Deframe the packet
+//! Deframe the packet
 auto deframed = serialflex::PacketFramer::deframePacket(packet);
 
 if (deframed.valid) {
-    // Deserialize the payload
+    //! Deserialize the payload
     SensorData deserialized = serialflex::deserialize<SensorData>(deframed.payload);
 }
 ```
@@ -276,7 +276,7 @@ try {
 ### Binary Inspection
 
 ```cpp
-// Print byte vector as hex
+//! Print byte vector as hex
 void printHex(const std::vector<uint8_t>& data) {
     for (const auto& byte : data) {
         std::cout << std::hex << std::setw(2) << std::setfill('0') 
